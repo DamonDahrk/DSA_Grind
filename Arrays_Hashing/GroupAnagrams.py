@@ -1,3 +1,8 @@
+# Input: strs = ["act","pots","tops","cat","stop","hat"]
+# Output: [["hat"],["act", "cat"],["stop", "pots", "tops"]]
+#  O(m * n) time 
+
+
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         GroupRequired = defaultdict(list)
