@@ -28,8 +28,8 @@ class Solution:
             j = i #setting the delimiter and finding the word eventually
             while s[j] != "|":
                 j += 1
-            LenOfIndividualString = int(str(s[i:j])) #len of individual strings
-            ResultList.append(str(s[j+1:j+1+LenOfIndividualString]))
+            LenOfIndividualString = int(s[i:j]) #len of individual strings
+            ResultList.append(s[j+1:j+1+LenOfIndividualString])
             #adding the word decoded
             i = j+1+LenOfIndividualString # now at the start of the next word
         
