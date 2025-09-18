@@ -13,36 +13,24 @@ class Solution:
         #Maybe the approach here should be the fact that we should make two pointers to traverse through the linked list and the other pointer
         #should always be n distance behind after one reaches end
 
-        ToBeDeleted = head
-        OutBounder = head
+        Dummy = ListNode(0,head) #value and next i.e head
+        left = Dummy
+        right = head #left will be behind to fetch the previous value when it goes out of bounds
 
-        while OutBounder and OutBounder.next: #while the pointer that will go out of bounds still still here 
+        while n>0 and right:
+            right = right.next 
+            n = n-1
+        #move the sliding LN window with right first ahead
 
-            for i in range(n):
-                OutBounder = OutBounder.next
-            #jump n distances ahead first
+        while right:
+            left = left.next 
+            right = right.next 
+        #will always have one more than n gap like this
 
-            ToBeDeleted = ToBeDeleted.next
-        
-        #now we have found our to be deleted linkedlist
-      
-        if head == ToBeDeleted:
-            return head.next #if head has to be deleted then return from next node onwards
+        left.next = left.next.next #deleting the node by unlinking from target to be del to the one after it 
 
-        prev = head
-        curr = head.next
+        return Dummy.next #incase head is deleted
 
-        while curr:
-            if curr == ToBeDeleted:
-                prev.next = curr.next #unlink that node
-            prev = curr
-            curr = curr.next
-
-        #return the deleted node list now from the head
-        
-        return head
-
-        
 
 
 
