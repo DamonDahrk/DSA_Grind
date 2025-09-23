@@ -1,0 +1,31 @@
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+# Example: Constructing a binary tree manually
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+
+     1
+    / \
+   2   3
+  / \
+ 4   5
+
+ TREE DEFINITION
+
+ print(root.preorder())   # Output: [1, 2, 4, 5, 3]
+print(root.inorder())    # Output: [4, 2, 5, 1, 3]
+print(root.postorder())  # Output: [4, 5, 2, 3, 1]
+
+Preorder (Root, Left, Right): Visit the root node first, then traverse the left subtree, then the right subtree. Useful for copying the tree or getting prefix notation.
+
+Inorder (Left, Root, Right): Traverse the left subtree, visit the root, then traverse the right subtree. For binary search trees, this gives nodes in sorted order.
+
+Postorder (Left, Right, Root): Traverse the left and right subtrees first, then visit the root. Useful for deleting the tree or getting postfix notation.
+
