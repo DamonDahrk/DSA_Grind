@@ -1,0 +1,38 @@
+A heap is a binary tree data structure commonly used for efficient access to the smallest (min-heap) or largest (max-heap) element. In Python, 
+heaps are typically implemented using the built-in heapq module, which offers a clean API for standard heap operations. 
+
+A heap maintains the heap property: in a min-heap, every parent node is less than or equal to its children; in a max-heap, each parent is greater
+
+import heapq
+
+# Creating an empty heap
+heap = []
+
+# Inserting elements
+heapq.heappush(heap, 20)
+heapq.heappush(heap, 10)
+heapq.heappush(heap, 30)
+heapq.heappush(heap, 5)
+
+# Accessing the smallest element (root)
+smallest = heap[0]
+
+# Removing the smallest element
+removed = heapq.heappop(heap)
+
+print("Heap:", heap)
+print("Smallest element:", smallest)
+
+Heap: [10, 20, 30]
+Smallest element: 5
+Removed element: 5
+
+#CAN GENERATE MAX HEAP BY HAX
+
+import heapq
+
+nums = [10, 20, 15, 30, 40]
+max_heap = [-n for n in nums]
+heapq.heapify(max_heap)
+largest = -max_heap[0]
+print("Largest element:", largest)
