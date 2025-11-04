@@ -33,4 +33,5 @@ class Solution:
             for c in range(COLS):
                 if board[r][c] == 'T':
                     board[r][c] = 'O'
+                    #value
         
