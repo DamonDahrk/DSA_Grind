@@ -17,7 +17,7 @@ class Solution:
 
             if i < len(s1) and s1[i] == s3[i+j] and backtracktree(i+1,j): #as long as its under s1 length and the character matches go ahead on that 
                 return True
-            if i < len(s2) and s2[j] == s3[i+j] and backtracktree(i,j+1):
+            if j < len(s2) and s2[j] == s3[i+j] and backtracktree(i,j+1):
                 return True
             
             dp[(i,j)] = False #this position doesnt have any matching string 
