@@ -1,0 +1,19 @@
+http server -> systems
+
+single server is a bad idea, because it is a single point of failure,
+you have to provision a new server and restore everything from a backup,
+switch DNS entry to that server,
+
+spread out the server now (separate out the database)
+single http server but atleast it is spreadm out, better than a single server, better resiliency
+
+pitfall is that maybe one server has more intensive cpu usage than others
+maybe due to large database or what not and slows the entire system down as a result.
+
+Vertical Scaling -> Just get a bigger Single Server , bigger VM , throw more
+hardware at a problem.
+
+HORTIzontal Scaling -> Modern Approach -> multiple servers, load balancers ->
+distribute the load -> single database
+
+choose the simplest arch
