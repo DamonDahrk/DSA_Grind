@@ -17,3 +17,195 @@ HORTIzontal Scaling -> Modern Approach -> multiple servers, load balancers ->
 distribute the load -> single database
 
 choose the simplest arch
+
+Scalability is the ability of a system to handle increased load by adding resources. The key word here is "ability", 
+a scalable system can grow to meet demand without requiring a complete architectural overhaul.
+
+Measuring Scalability : RPS Requests per second, number of API Calls the system handles,
+Concurrent Users, Users active at the same time.
+Data Volume, amount of data stored or processed. 10 TB storage
+Throughput -> Data transferred per unit time.
+
+Query Rate: Database queries per sec 
+Message Rate: Messages processed through queries 100k msg/s 
+
+Performance Under Load: 
+
+The goal is to keep performance relatively stable as load increases. Ideally, you 
+want linear or sublinear degradation, where doubling load does not double response 
+time. When response times spike or the system starts timing out, you have hit a 
+scalability wall.
+
+Vertical Scaling -> More Power 4 CPU -> 16 GB RAM -> 32 CPU 256 GB RAM 
+
+Common Verticaol Scaling options is to add more CPU Core to compute intensive workloads,
+Increase RAM to cache more data in memory
+User Faster SSDs to reduce I/O bottenecks
+Upgrade network cards for higher bandwidth
+
+Pros
+Simple: No code changes required. Just move to a bigger machine.
+Lower latency: All data is local, no network hops.
+No distributed complexity: A single server means no network partitions, no data synchronization issues.
+Cons
+Hardware limits: You cannot scale beyond the largest available machine. Even cloud providers have limits.
+Single point of failure: One server means one failure point. If it goes down, everything goes down.
+Cost curve: Larger machines cost disproportionately more. Doubling capacity often more than doubles cost.
+Downtime during upgrades: Migrating to a bigger machine typically requires downtime.
+
+When to Use Vertical Scaling
+Vertical scaling works well for:
+
+Databases where data locality matters (before sharding becomes necessary)
+Applications with strong consistency requirements
+Early-stage startups that need simplicity over scale
+Workloads with predictable, moderate growth
+
+Instead of one powerful server, you have many commodity servers working together. 
+A load balancer distributes incoming requests across all servers.
+
+Pros
+No hard limit: You can keep adding servers as needed. Cloud providers make this nearly unlimited.
+Fault tolerance: If one server fails, others continue serving traffic. No single point of failure.
+Cost-effective: Many smaller machines often cost less than one giant machine.
+Geographic distribution: You can place servers closer to users for lower latency.
+Cons
+Complexity: Distributed systems are harder to build, debug, and maintain.
+Data consistency: Keeping data synchronized across servers is challenging.
+Network overhead: Communication between servers adds latency.
+Stateless requirement: Application servers typically need to be stateless, 
+which may require architectural changes.
+
+Stateless vs Stateful: 
+
+For a stateful model, once a user session is stored in server  all their req must go to the same server.
+This creates hotspots and makes it risky to remove servers. Stateless model has session data. 
+lives in shared store like Redis so any server can handle any request. 
+
+To make services stateless:
+
+Store session data in a shared cache (Redis, Memcached) 
+Use tokens (JWT) instead of server-side sessions ✔️
+Store uploaded files in object storage (S3) instead of local disk ✔️
+
+Clients->Load Balancer -> App Server 1  |
+                       -> App Server 2  | -> Redis Cache,Database 
+                       -> App Server 3  |
+
+                       App Servers are easiest to scale horizontally provided they are
+stateless as above . 
+
+Key strategies:
+Make services stateless
+Use a load balancer to distribute traffic
+Auto-scale based on CPU, memory, or request count
+Deploy across multiple availability zones
+
+Database Tier
+Databases are typically the hardest to scale because they manage state. Unlike application 
+servers, you cannot simply spin up more database instances and put a load balancer 
+in front of them. Data consistency, durability,
+ and transaction isolation all complicate matters.
+
+ Database Tier -> Whats your bottleneck 
+ -> Read Replicas for read heavy workloads which most apps are: create copies of your db 
+ that handle read queries. 
+When to use: Read-to-write ratio is 10:1 or higher, and writes are not the bottleneck.
+
+Pros
+Simple to set up (managed services handle it)
+Offloads read traffic from primary
+Provides read availability if primary fails
+No application changes for basic setup
+Cons
+Does not help with write-heavy workloads
+Introduces replication lag (stale reads)
+Replicas consume storage (full data copy)
+Failover can cause brief inconsistency
+
+Sharding -> (Partitioning):
+
+When read replicas are not enough, or when write volume exceeds what a single primary 
+can handle, you need to split your data across multiple databases based on a partition key:
+
+Pros-> both reads and writes, scales horizontally, each shard is smaller and faster 
+Cons-> Complex, cross shard queries are expensive or impossible, hard transactions across shards 
+
+Common sharding strategies:
+Range-based: Shard by value ranges (A-H, I-P, Q-Z)
+Hash-based: Hash the key and mod by number of shards
+Directory-based: Maintain a lookup table mapping keys to shards
+
+3. NoSQL Databases
+NoSQL databases like Cassandra, MongoDB, and DynamoDB are designed for horizontal scaling from the ground up:
+
+Built-in sharding: Data is automatically distributed
+Eventual consistency: Trade strong consistency for availability
+No joins: Data model must accommodate denormalization
+
+Caching Tier
+Caching reduces load on databases and improves response times. A well-designed cache can 
+handle 100x the throughput of a database, making it essential for high-traffic systems.
+ Redis, for example, can handle 100,000+ operations per second on a single node.
+
+Cache Scaling strategies:
+
+Redis Cluster: Automatically partitions data across nodes using hash slots
+
+Consistent hashing: Distributes keys evenly and minimizes 
+redistribution when nodes are added or removed
+Cache-aside pattern: Application checks cache first,
+ falls back to database on cache miss, 
+ then populates the cache
+
+Message queues are essential for scaling asynchronous workloads. They decouple producers 
+from consumers, allowing each to scale independently, and they buffer traffic spikes 
+so consumers can process at their own pace.
+
+Buffer traffic spikes: Queue absorbs bursts, consumers process at their own pace
+
+Stage 1 -> At launch everything runs on one machine, App and Db are on the same server 
+-> 0-10k users, straightforward debugging, no network latency. 
+Bottleneck emerges when the application and database start competing for CPU and memory on the
+same machine 
+
+Stage 2: Separate Database (10K-100K users)
+
+first move -> app server and db server different, db server can have more RAM for caching, while
+app gets more CPU for req processing bottleneck then is DB server  for handling more queries 
+
+Stage 3: Add Caching 100k - 500k 
+
+Cache layer can dramatically reduce database load. Hot data, things like user profiles.
+recent posts, and session data get served from memory. Redis can handle hundreds of thousands
+of reads per second far more than MSQL 
+
+Users -> App Server -> Redis Cache -Cache miss - > MySQL server 
+
+Stage 4: Multiple App servers to handle users 500k -> 2M 
+
+This is where horizontal scaling begins.
+ A load balancer distributes traffic across multiple app servers. 
+ Each server is stateless, storing no session data locally.
+  The Redis cache serves as the shared session store.
+Traffic spike during peak hours? Auto-scaling adds servers automatically.
+Stage 5: Read Replicas (2M-10M users)
+
+Most applications are read-heavy, with reads outnumbering writes by 10:1 or more. 
+Read replicas take advantage of this pattern. The primary database handles all writes,
+ while replicas serve read queries. This multiplies read capacity without changing the 
+ application much.
+
+ The trade-off is replication lag. Replicas may be a few milliseconds behind the primary, 
+ so recently written data mignot be immediately visible on reads. For most applications,
+  this is acceptable.
+
+  Stage 6: Sharding (10M+ users)
+
+  Sharding is the final frontier of relational database scaling.
+   Data is partitioned across multiple databases based on a shard key(User Key)
+   This is powerful but comes with significant complexity. 
+   Cross-shard queries become expensive or impossible.
+
+    Many teams at this stage consider moving to distributed databases like CockroachDB 
+    or Vitess that handle sharding automatically.
