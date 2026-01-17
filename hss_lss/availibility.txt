@@ -1,0 +1,167 @@
+Availability = Uptime / (Uptime + Downtime)
+When components are in series, meaning all must work for the system to function, availability multiplies:
+
+Web Server 99.9 x App Server 99.9 x Database 99.9 = 99.7 
+Each component in the chain reduces overall availability.
+
+Two servers with 99.9% availability each give you nearly six nines when running in parallel.
+ This is the power of redundancy.
+ To design for availability, you must understand how things fail.
+ Hardware Failures
+Everything physical eventually breaks. The question is when, not if.
+Component	Typical Failure Rate	MTBF
+Hard Drive (HDD)	2-4% per year	300,000 hours
+SSD	0.5-1% per year	1-2 million hours
+Server	2-4% per year	300,000 hours
+Network Switch	1-2% per year	500,000 hours
+
+MTBF = Mean Time Between Failures.
+
+At scale, hardware failures are not exceptional events. They are routine.
+ A data center with 10,000 servers will see hundreds of hardware failures per year.
+
+if your architecture cannot handle a server dying at any moment, 
+you do not have a highly available system
+
+Software Failures
+Hardware breaks randomly. Software breaks creatively.
+
+Bugs: Code defects that cause crashes or incorrect behavior
+Memory leaks: Gradual resource exhaustion
+Deadlocks: Processes waiting on each other indefinitely
+Cascading failures: One failure triggering failures in dependent systems
+
+Network Failures:
+
+Packet Loss-> Data doesnt reach destination 
+Latency Spikes -> Delays in communication 
+Partition -> Network Split isolates groups of server
+DNS failures -> Name resolution stops working
+
+Human Errors: 70-80% outages are due to human errors
+
+common eg: failed deployments : bad code/ broken migrations pushed
+accidental deletions, capacity planning underestimation, config mistakes: typo/wrong variable
+
+Redundancy: The Foundation of Availability
+Redundancy means having backup components that can take over when primary components fail.
+
+Active-Passive (Standby)
+In an active-passive configuration, one component handles all the work while another waits 
+idle as a backup.
+ When the active component fails, the passive one takes over.
+
+ traffic -> primary server(active) -failover-> standby server PASSIVE 
+
+ Cons
+Failover takes time (detection + promotion + routing changes)
+Standby may not be truly “production-ready” because it isn’t tested under real load
+
+The standby can be configured in different states of readiness:
+
+Standby Type	            State	                    Failover time           Cost
+Cold Standby	Powered off, needs to boot	              Minutes	            Lowest
+
+Warm Standby	Running but not receiving traffic	  Seconds to minutes	    Medium
+
+Hot Standby	    Running, data synchronized, 	           Seconds	            Highest
+                    ready to serve
+
+hot stanby fully synced data, sync replication (qlik) 
+
+Active-Active 
+
+Active-Active
+In an active-active configuration, all components handle traffic simultaneously. T
+here is no distinction between primary and backup because every node is doing real work.
+
+traffic -> load balancer -> 3 active servers
+
+Pros
+No failover delay
+All nodes tested under real load
+Better resource utilization
+Cons
+More complex
+Must handle data consistency across nodes
+equires stateless design or shared state
+
+for stateful services need shared storages
+
+Geographic redundancy distributes your system across multiple physical locations:
+
+AZs AVAILIBILITY Zones are the best here because they only prevent against single data
+point failures by having mutliple data centers in same place, latency low enough for sync repli
+
+Multi Region, for DR stuff, global app, most mr systems use asynchronous replication and accept
+data loss in a disaster.
+
+Redundancy Accross Layers: 
+
+A chain is only as strong as its weakest link. If you have redundant app servers but a 
+single database, the database is your single point of failure.
+
+|| True high availability requires redundancy at every layer of your stack.|| 
+
+High Availability Patterns
+
+Pattern 1 -> Load Balancer with Multiple Backends 
+load balancer distributes traffic across multiple servers automatically routing failures
+
+Users -> Load Balancer -> Server 1 Server 2 Server 3
+
+How it provides high availibility : lb continuosly mnitors backend health 
+failed servers are automatically removed from rotation 
+traffic redstributes to healthy servers in seconds
+
+Load Balancer Redundancy
+
+The load balancer itself is a single point of failure. 
+For true high availability, you need redundant load balancers:
+
+Users -> DNS -> Virtual IP -> LB1  Active - server1/server2
+                           -> LB2 Stanby  - server1/server2
+
+                           Azure LB, AWS ALB , Google Cloud Load Balancer handles this automatically
+
+Pattern 2 -> Database Replication with Automatic Failover. 
+
+Database are stateful and cannot simply be load-balanced like web servers. db availiblity 
+requires replication
+
+Failover Monitor -    ->                            Sync Replica (FAILOVER TARGET)
+                    | -> Primary DB (ReadWrites) -> Sync Replica (FAILOVER TARGET) 
+                        / ASYNC Replica Read Scaling (async replication) /Async Replica  Analytics
+App              -
+
+Synchronous replication guarantees zero data loss but adds latency.
+Every write must wait for the replica to confirm. If your replica is in a different region, 
+this adds significant latency (50-100ms per write).
+
+Asynchronous replication has no performance impact but can lose data. If the primary fails, 
+any writes not yet replicated are lost. The "replication lag" is typically seconds but 
+can grow during high load.
+
+Most production systems use synchronous replication for the failover target 
+and asynchronous replication for read replicas and analytics.
+
+Pattern 3: Queue-Based Load Leveling
+When downstream services cannot handle peak load, 
+use a queue to buffer requests and process them at a sustainable rate.
+
+Web Servers -> Message Queue (KAFKA/SQS) -> Worker 1/Worker 2 / Worker 3 -> DB 
+
+High Availbility -> Decouples producers from consumers / Buffers traffic spikes that would
+                    overwhelm the database 
+                 -> Workers can fail and restart without losing messages 
+                 -> Can scale workers independently based on queue depth 
+
+Pattern 4: Circuit Breaker
+When a dependency fails, continuing to call it wastes resources and can cause cascading failures. 
+
+After a certain failure threshold the time out expires to prevent cascading failures, 
+test req succeeds when half open test recovery 
+
+State	Behavior	Transitions→ Open: when failure rate exceeds threshold
+Open	Fail fast. All requests immediately rejected with error.
+Half-Open	Testing. Allow limited requests through.
