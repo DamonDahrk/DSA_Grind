@@ -1,0 +1,70 @@
+IP Addresses
+, in the common IPv4 address 192.168.1.10 with a standard subnet mask, the breakdown is:
+
+Network ID: 192.168.1
+Host ID: 10
+
+Host ID: This part of the address identifies a specific device within that network.
+Network ID: This part of the address identifies the specific network the device is on. 
+
+Routers primarily look at the Network ID. 
+
+The biggest issue with IPv4 is address exhaustion. With the explosion of internet-connected
+ devices, the ~4.3 billion addresses have effectively run out.
+
+ Format
+It is written as four numbers separated by dots (dotted-decimal notation), where each number 
+is an "octet" ranging from 0 to 255 (e.g., 172.217.167.78).
+
+IPv6: The Modern Standard
+
+It's a 128-bit address, providing a staggering 2128 (or 340 undecillion) unique addresses.
+
+t is written as eight groups of four hexadecimal digits, separated by colons 
+(e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334). Zeros can be compressed for brevity.
+
+Stateless Address Autoconfiguration (SLAAC): 
+Devices can generate their own IP address without needing a DHCP server.
+Built-in Security: IPsec, a suite of protocols for securing communications, 
+is a mandatory part of IPv6.
+Efficient Routing: Simplified packet headers allow for faster processing by routers.
+
+Public IP Address: This is a globally unique address that is routable on the internet. Your 
+Internet Service Provider (ISP) assigns one to your router. When you visit a website,
+ your request is sent from your public IP.
+
+ Private IP Address: This is an address used within a local, private network 
+ (like your home Wi-Fi or an office LAN). These addresses are not routable on the internet
+  and are reused in millions of private networks worldwide.
+
+  So how do devices with private IPs access the internet?
+
+Through Network Address Translation (NAT).
+
+Your home router acts as a NAT gateway. It takes requests from devices on your private network, 
+replaces their private source IP with its single public IP,
+
+6. Static vs Dynamic IP Addresses
+
+Static IP: A static IP address is manually configured for a device and does not change. This 
+is essential for servers, printers, and other devices that need to be consistently 
+reachable at the same address.
+
+Dynamic IP: A dynamic IP address is assigned automatically by a DHCP (Dynamic Host Configuration Protocol) 
+server. Most consumer devices (laptops, phones) get dynamic IPs. The address is leased for 
+a period and can change the next time you connect.
+
+7. Subnetting and CIDR
+
+As networks grow, it's often necessary to divide them into smaller, more manageable segments. 
+This process is called subnetting.
+
+Subnetting involves "borrowing" bits from the Host ID part of an IP address to create more Network IDs.
+
+A subnet mask is used to tell devices which part of the address is the network and which is the host.
+
+This is where CIDR (Classless Inter-Domain Routing) comes in. 
+
+Loopback Address: 127.0.0.1 (IPv4) and ::1 (IPv6). This address, also known as "localhost," 
+always refers to the local device itself.
+
