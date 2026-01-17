@@ -1,0 +1,110 @@
+The OSI (Open Systems Interconnection) Model is a conceptual framework 
+
+Its primary purpose is to:
+
+Standardize Communication: Provide a common language and framework for network designers and developers.
+Ensure Interoperability: Allow different hardware and software from various vendors to communicate seamlessly.
+Promote Modular Design: Break down complex networking tasks into smaller, more manageable layers, making development and troubleshooting easier.
+
+Overview of the OSI Model
+
+The OSI model divides the process of network communication into seven distinct layers,
+
+A crucial concept is encapsulation: As data moves down the stack at the sender, 
+each layer adds its own "header" 
+
+Layer 1 – Physical Layer
+The Physical Layer is responsible for the actual transmission of raw bits (0s and 1s) over the 
+physical communication medium.
+Examples: Ethernet cables (Cat 5e, Cat 6), fiber optics,
+
+Layer 2 – Data Link Layer
+The Data Link Layer ensures reliable transmission of data between directly connected nodes
+ (i.e., devices on the same local network segment). It handles framing (dividing data 
+ into manageable units), physical addressing (using MAC addresses), and error 
+ detection/correction for the local link.
+ 
+ Examples: Ethernet, Wi-Fi 
+
+ Layer 3 – Network Layer
+ The Network Layer is responsible for logical addressing (IP addresses) and routing data
+  packets across potentially multiple interconnected networks. It determines the 
+  best path for data to travel from source to destination.
+
+  Protocols: IP (Internet Protocol), ICMP (Internet Control Message Protocol),
+
+  Layer 4 – Transport Layer
+
+  The Transport Layer provides end-to-end communication between processes (applications) on different hosts.
+  Protocols: TCP (Transmission Control Protocol) and UDP (User Datagram Protocol).
+
+  Layer 5 – Session Layer
+
+  The Session Layer is responsible for establishing, managing, and terminating communication sessions
+   between applications. 
+
+   xamples: While less distinct in modern TCP/IP implementations, concepts like RPC (Remote Procedure Call)
+    sessions or WebSocket connections align with this layer's purpose.
+
+Layer 6 – Presentation Layer
+
+The Presentation Layer ensures that data is in a usable format for the Application Layer. 
+It handles data translation, encryption/decryption, compression/decompression, and 
+serialization/deserialization.
+
+Examples: SSL/TLS (encryption), JSON, XML
+
+Layer 7 – Application Layer
+
+The Application Layer is the closest to the end-user. It defines how applications
+ interact with the network and provides user-facing services. This is where your 
+ actual software logic often resides.
+
+Examples: HTTP, HTTPS, DNS, SMTP, FTP, SSH, Telnet, gRPC, WebSocket.
+
+2. Encapsulation and Decapsulation in Action
+
+AppLayer L7 -> Your browser creates an HTTP GET request
+PresLayer L6 -> The data is prepared, possibly compressed, and then encrypted by TLS.
+Session Layer (L5): A TLS session is managed.
+TransportLayer L4 ->  The encrypted data is segmented (if too large) and a TCP header is added, 
+including source and destination port numbers (e.g., SRC=50000, DEST=443)
+
+Network Layer (L3): An IP header is added, containing the source IP address
+ of your computer and the destination IP address of the web server. This unit 
+ is now an IP packet.
+
+ Data Link Layer (L2): An Ethernet header and trailer are added, containing the 
+ source MAC address of your network card and the destination MAC address of your 
+ router (for the first hop). This unit is now an Ethernet frame.
+
+ Physical Layer (L1): The frame is converted into raw electrical signals or light 
+ pulses and sent over the physical medium (e.g., Wi-Fi radio waves, Ethernet cable).
+
+ At the web server, the process reverses:
+
+ Physical Layer (L1): Electrical signals are received and converted back into an Ethernet frame.
+Data Link Layer (L2): The Ethernet header/trailer is removed, MAC addresses are checked. 
+The IP packet is extracted.
+
+Network Layer (L3): The IP header is removed, and the destination IP is checked. 
+The TCP segment is extracted.
+
+Transport Layer (L4): The TCP header is removed, destination port (443) is checked, and 
+segments are reassembled. The encrypted data is passed up.
+
+Session Layer (L5): The TLS session is managed.
+Presentation Layer (L6): The data is decrypted by TLS and decompressed.
+Application Layer (L7): The original HTTP GET request is delivered to the web server 
+application, which then processes it.
+
+While the OSI model is a powerful theoretical tool, the TCP/IP model is the one that's
+ actually implemented and used by the Internet. It's a more pragmatic, consolidated model,
+  typically with four layers:
+
+ tcp/ip used -> L7-L5 App Layer (User facing apps)
+ Transport -> L4 -> End to End comm (TCP/UDP)
+ Internet -> L3 -> Logical Addressong routing IP
+ Network Access -> L1/L2 -> Phys media local network links
+ 
+  

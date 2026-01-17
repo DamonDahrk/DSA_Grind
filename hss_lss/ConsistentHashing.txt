@@ -64,4 +64,19 @@ keys remain unaffected.
 This results in minimal data movement, unlike traditional hashing where
  removing a node would require reassigning most keys.
 
+3. Virtual Nodes
+In basic consistent hashing, each server is assigned a single position on the hash ring. However,
+ this can lead to uneven data distribution, especially when:
+
+ The number of servers is small.
+
+Some servers accidentally get clustered together, creating hot spots.
+
+A server is removed, causing a sudden load shift to its immediate neighbor.
+
+With virtual nodes, each server is hashed multiple times:
+Now, instead of just one point, S1 is represented at multiple positions, making the 
+distribution more even.
+If S1 fails, its keys are more evenly redistributed among S2 and S3, 
+rather than all going to S2.
 
