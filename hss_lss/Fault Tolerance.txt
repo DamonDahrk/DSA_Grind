@@ -1,0 +1,143 @@
+What is fault tolerance?
+
+Fault tolerance describes a system’s ability to handle errors and outages without any loss of functionality. It is a critical capability,
+ especially in cloud computing, where reliability and uptime are paramount.
+
+ app 1 - db app2 - db
+                 - db (stanby replica)
+
+In this scenario, Application 2 is more fault tolerant. If its primary database goes offline,
+ it can switch over to the standby replica and continue operating as usual.
+
+ Application 1 is not fault tolerant. If its database goes offline, all application features 
+ that require access to the database will cease to function.
+
+  In reality, fault tolerance must be considered in every layer of a system
+   (not just the database), and there are degrees of fault tolerance.
+
+   Fault tolerance can also be achieved in a variety of ways. 
+
+   Multiple hardware systems capable of doing the same work. 
+   For example, Application 2 in our diagram above could have its two databases 
+   located on two different physical servers, potentially in different locations.
+   
+   Multiple instances of software capable of doing the same work. For example, many
+    modern applications make use of containerization platforms such as Kubernetes so 
+    that they can run multiple instances of software services.
+
+    Backup sources of power, such as generators, are often used in on-premises systems
+     to protect the application from being knocked offline if power to the servers is 
+     impacted by, for example, the weather. 
+
+High Availability vs. Fault Tolerance 
+
+ when discussing fault tolerance vs high availability, the two are not exactly the same thing. 
+ Keeping an application highly available is not simply a matter of making it fault tolerant.
+ 
+  A highly fault-tolerant application could still fail to achieve high availability if, 
+  for example, it has to be taken offline regularly to upgrade software components, change 
+  the database schema, etc.   
+
+  Fault tolerance goals
+
+  Building fault-tolerant systems is more complex and generally also more expensive. If we 
+  think back to our simple example from earlier, Application 2 is more fault tolerant,
+   but it also has to pay for and maintain an additional database server.
+
+   Normal functioning vs. graceful degradation
+
+   approach 1  your goal is normal functioning — you want your application, 
+   and by extension the user’s experience, to remain unchanged even if an element
+    of your system fails or is knocked offline.
+
+    Another approach is aiming for what’s called graceful degradation, where outages
+     and errors are allowed to impact functionality and degrade the user experience, 
+     but not knock the application out entirely.
+
+     For example, if a software instance encounters an error during a period of heavy 
+     traffic, the application experience may slow for other users, and certain features
+      might become unavailable. 
+
+    Mission-critical applications and systems will likely need to maintain normal 
+    functioning in all but the most dire of disasters, whereas it might make economic 
+    sense to allow less essential systems to degrade gracefully.  
+
+    Setting survival goals
+     in ascending order of resilience:
+     Survive node failure.
+     Survive AZ failure. Running instances of your software across multiple 
+     availability zones (data centers) within a cloud region will allow you to
+      survive AZ outages,
+
+      Survive region failure. 
+      Running instances of your software across multiple cloud regions can allow you
+      to survive an outage affecting an entire region, 
+
+    Survive cloud provider failure
+    . Running instances of your software both in the cloud and on-premises, or 
+    across multiple cloud providers, can allow you to survive even a full cloud provider
+     outage.
+
+      cost of fault tolerance
+
+      important consideration is cost. This is a difficult and very case-specific factor, 
+    
+    , operating multiple instances of your database across multiple cloud regions is likely
+     to cost more on the balance sheet than operating a single instance in a single region.
+      However, there are a few things you must also consider:
+
+    
+    What does an outage cost in dollars? For mission-critical systems, even a few minutes
+     of downtime can lead to millions in lost revenue.
+
+     What does an outage cost in reputation damage? Consumers are demanding, particularly 
+     in certain business verticals. An application outage of just a few minutes, 
+     for example, could be enough to scare millions of customers away from a bank.
+
+     What does an outage cost in engineering hours? Any time your team spends recovering 
+     from an outage is time they’re not spending building new features or doing other 
+     important work.
+
+     What does an outage cost in team morale and retention / hiring? Outages also often 
+     come at inconvenient times. The US-east-1 outage, for example, came the day before 
+     Thanksgiving, when most US-based engineers were on vacation, 
+
+      let’s consider the real-world case of a major electronics company that needed 
+      to build a more scalable, fault-tolerant version of its existing MySQL database.
+    
+
+The company could have made that MySQL database more fault tolerant by manually sharding 
+it, but that approach is technically complex and requires a lot of work to execute and maintain.
+
+Instead, the company chose to migrate to CockroachDB dedicated, a managed database-as-a-service
+ that is inherently distributed and fault tolerant.
+
+ Although CockroachDB dedicated itself is more expensive than MySQL (which is free),
+  migrating to CockroachDB enabled the company to save millions in labor costs because
+   it automates the labor-intensive manual sharding process and resolves many of the
+   technical complexities that manually sharding would introduce.
+
+Fault-tolerant architecture examples
+
+In the diagram above, the application is spread across multiple regions, with each
+ region having its own Kubernetes cluster.
+
+ Within each region, the application is built with microservices that execute specific tasks, 
+ and these microservices are typically operated inside Kubernetes pods
+
+ This allows for much greater fault tolerance, since a new pod with a new instance can
+  be started up whenever an existing pod encounters an error. This approach also makes
+   the application easier to scale horizontally
+
+Achieving fault tolerance in the persistence (database) layer
+Here, CockroachDB is chosen because its distributed, node-based nature naturally provides
+ a high level of fault tolerance and the same flexibility when it comes to scaling up
+  and down horizontally
+
+  Being a distributed SQL database, it also allows for strong consistency guarantees,
+   which is important for most transactional workloads.
+
+   CockroachDB also makes sense for this architecture because although it’s a distributed database, 
+   it can be treated like a single-instance Postgres database by the application —
+
+   
