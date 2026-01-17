@@ -1,0 +1,82 @@
+DNS Actually Works
+
+This is where the Domain Name System (DNS) helps. It acts as a translator between 
+human-readable domain names and machine-friendly IP addresses.
+
+The Journey of a DNS Query
+
+1. The Browser Cache
+
+The browser’s first checks is its own cache. It checks whether it has recently 
+resolved the domain you’re trying to visit.
+
+2. The Operating System Cache
+If the browser doesn’t know, it turns to your computer’s operating system.
+
+The OS maintains its own local cache of recent domain lookups, shared across applications.
+
+3. The Recursive Resolver
+If the OS doesn’t have the answer, your computer sends the query to a special server 
+called a Recursive Resolver.
+
+This resolver is usually operated by your Internet Service Provider (ISP) or a public DNS service like:
+
+Google DNS: 8.8.8.8
+
+4. The Root Servers
+
+If the resolver doesn’t already have the answer in its cache, it starts its search at the very top of the
+ internet's hierarchy: the Root Servers.
+
+ There are only 13 sets of these root servers globally (though they are replicated in hundreds of locations for reliability).
+
+Root servers don’t know the final IP, but they know where to look next.
+
+They looks at the last part of the domain (.com in google.com) and direct the resolver to the appropriate Top-Level Domain 
+(TLD) server.
+
+5. The TLD Servers (top level domain)
+The resolver now talks to the TLD servers. The TLD server manages all domains ending in a specific
+ extension, like .com, .org, .gov, .in, etc.
+
+ The TLD server doesn't have the final IP address either. However, it knows which server is the official 
+ record-keeper for the google.com domain. 
+
+ 6. The Authoritative Name Server
+
+Finally, the resolver contacts the authoritative name server. This server is the ultimate source of truth for a specific domain. 
+It holds the official DNS records for google.com and knows the exact IP address.
+
+7. Back to the Browser
+The recursive resolver now has the IP address. It passes this information back to your 
+computer. Your computer then caches 
+this answer so it doesn't have to repeat the whole process next time.
+
+4. What Makes DNS Fast and Reliable?
+
+1. Global Anycast Networks
+Root servers and public resolvers (like Cloudflare or Google DNS) use anycast routing, 
+which means
+ the same IP address is advertised from many locations around the world.
+
+ 2. Redundant Authoritative Servers
+Domains usually have more than one authoritative name server, spread across different regions.
+
+If one server fails or becomes unreachable, another can respond.
+
+3. GeoDNS
+Some domains use geographic-based DNS responses.
+
+The same domain may resolve to different IP addresses depending on 
+where the request originates.
+
+Load Balancing with DNS
+DNS can return multiple IP addresses for a single domain.
+
+With multiple A records or CNAMEs, traffic gets distributed across several servers.
+
+ Content Delivery Networks (CDNs)
+Many websites rely on CDNs to speed up content delivery.
+
+DNS queries resolve to an edge server located near the user.
+
