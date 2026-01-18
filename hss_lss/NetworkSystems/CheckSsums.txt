@@ -1,0 +1,38 @@
+checksum answers the question: "Has this data been altered unintentionally or maliciously since it was created, 
+stored, or transmitted?"
+
+A checksum is a unique fingerprint attached to the data before it's transmitted.
+
+When the data arrives at the recipient's end, the fingerprint is recalculated to
+ ensure it matches the original one.
+
+ Checksums are calculated by performing a mathematical operation on the data, such as adding up all the bytes or running it 
+ through a cryptographic hash function.
+
+ Calculation: Before sending or storing data, the original data is processed through a 
+ specific algorithm to produce a checksum value.
+
+-> The checksum is appended to the data and sent over the network
+ or saved in storage.
+
+Verification: Upon reception, the checksum is recalculated using the same 
+algorithm on the received data. This newly calculated checksum is compared with the
+ original checksum.
+
+Error Detection: If the two checksum values match, the data is considered intact.
+ If they do not match, it indicates that the data has been altered or corrupted during 
+ transmission or storage.
+
+ Types of Checksums:
+
+ Parity Bit: A parity bit is a single bit that is added to a group of bits to make the total number of 1s 
+ either even (even parity) or odd (odd parity). 
+
+CRC (Cyclic Redundancy Check): It works by treating the data as a large binary number and 
+dividing it by a predetermined divisor. 
+
+Cryptographic Hash Functions: These are one-way functions that generate a fixed-size hash
+ value from the data. Popular examples include MD5, SHA-1, and SHA-256.
+
+ ex : File Downloads, Data Backups, Network Communications.
+
