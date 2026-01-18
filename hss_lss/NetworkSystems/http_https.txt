@@ -1,0 +1,87 @@
+HTTP (HyperText Transfer Protocol) is a stateless, text-based application-layer protocol 
+used for communication between web clients and servers
+
+Application Layer Protocol: HTTP operates at Layer 7 of the OSI model.
+Client-Server Model: Communication is always initiated by a client
+Built on TCP: HTTP traditionally sits on top of TCP (Transmission Control Protocol) at 
+the Transport Layer, leveraging TCP's reliable, ordered, and connection-oriented delivery. 
+By default, HTTP uses port 80.
+
+Process:
+
+Client first makes TCP connection with the Server
+Client then sends an HTTP request message:
+it includes:
+-> Can be GET POST , URL , HTTP Headers, (message body) for POST 
+
+Server recieves REQ and processes it
+
+HTTP Response is sent back to the user:
+-> Can be 200 OK, 404 Not found 
+-> Response Headers, Message body included (HTML content req, json data)
+
+TCP connection is either closed after response or kept open for later req (HTTP keep alive)
+
+HTTP is inherently stateless.
+
+Pros: Easier to scale, as any server can handle any request without needing prior context.
+Cons: Requires mechanisms like cookies, session IDs, or JWTs (JSON Web Tokens) 
+to maintain user state at the application level.
+
+Common methods: GET -> retrieve Data -> Is idempotent.
+                POST -> submit data,new resource created -> Not idempotent
+                PUT -> Update/Replace resource -> Is idempotent
+                DELETE -> Remove resource -> Is Idempotent 
+                PATCH -> Apply modif to a resource -> Not idempotent 
+
+Common HTTP Status Codes: 200 OK: Request succeeded. 201 Created: Resource successfully created.
+301 Moved Permanently: Resource moved. 302 Found: Temporary redirect. 
+
+400 Bad Request: Invalid syntax. 401 Unauthorized: Authentication required. 404 Not Found: Resource not found.
+403 Forbidden: Server understood, but refuses to authorize. 500 Internal Server Error: Generic server error. 
+502 Bad Gateway: Server acting as gateway received invalid response. 
+
+Limitations of HTTP: No Encryption: All data (requests, responses, headers, body) is sent in plain text. 
+
+No Authentication: There's no inherent way to verify the identity of the server you're communicating with. 
+
+No Integrity: Data transmitted over HTTP can be modified in transit without detection.
+
+These vulnerabilities exposed users to serious security risks: Eavesdropping 
+Injection Attacks: Malicious code could be injected into unencrypted web traffic.
+
+HTTPS (HTTP Secure) is not a separate protocol but rather HTTP layered on top of
+ SSL/TLS (Secure Sockets Layer / Transport Layer Security). 
+
+ By default, HTTPS uses port 443.
+
+ HTTPS provides three core guarantees:
+
+Encryption (Confidentiality): All data exchanged between the client and server is encrypted,
+ making it unreadable to third parties who might intercept the traffic.
+Integrity: It ensures that the data has not been tampered with or corrupted during transit. 
+Authentication: It verifies the identity of the server (and optionally the client) 
+using digital certificates. 
+
+SEOs prefer HTTPS over HTTP 
+
+Use Case HTTP:
+Local development, internal, non-sensitive apps
+Use Case HTTPS:
+All production web traffic, APIs, sensitive data
+
+The secure connection in HTTPS is established through a process called the TLS Handshake.
+
+Client Hello: The client initiates the connection, sending a "Client Hello" message that includes
+ its supported TLS versions, 
+
+Server Hello: The server responds with a "Server Hello," selecting the best TLS version and cipher
+ suite, along with its own random number and its SSL/TLS certificate.
+
+ Certificate is verified by Cert Auth (CA) by checking validity, expiry date etc. 
+ Key Exchange: The client and server then use public-key cryptography (from the server's certificate) 
+ to securely exchange a pre-master secret. 
+
+ Encrypted Communication: Once the session key is established, all subsequent application data (HTTP 
+ requests and responses) is encrypted and decrypted using this much faster symmetric
+  encryption key.

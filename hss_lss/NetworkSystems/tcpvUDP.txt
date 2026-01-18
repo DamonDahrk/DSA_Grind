@@ -1,0 +1,5 @@
+Both TCP (Transmission Control Protocol) and UDP (User Datagram Protocol) operate at the 
+Transport Layer (Layer 4) of the OSI model. Their job is to take data 
+from an application on one device and deliver it to an application on another.
+
+Choosing between them is a critical system design decision.
