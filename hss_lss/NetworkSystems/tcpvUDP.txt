@@ -3,3 +3,85 @@ Transport Layer (Layer 4) of the OSI model. Their job is to take data
 from an application on one device and deliver it to an application on another.
 
 Choosing between them is a critical system design decision.
+
+Transport Layer Responsibilities:
+
+Segmentation and Reassembly 
+Delivery Model : Providing either a reliable delivery service or a best-effort transmission.
+Flow and Congestion Control: Managing the rate of data transmission to avoid overwhelming 
+the receiver or the network itself.
+
+ TCP focuses on providing a highly reliable, ordered stream of data, 
+ while UDP prioritizes speed and simplicity with a best-effort approach.
+
+ TCP Uses 3 way handshake -> SYN, SYN ACK , ACK -> establish reliable connection 
+ Reliability: Every packet sent is tracked with a sequence number. 
+ The receiver sends acknowledgments (ACKs) for packets it receives. 
+  TCP uses a "sliding window" mechanism to prevent the sender from overwhelming 
+  the receiver (flow control)
+
+  How TCP Works
+  SYN (Synchronize): The client initiates the connection by sending a SYN message,
+   signaling its intent to start communication and sharing its initial sequence number (ISN).
+
+   SYN-ACK (Synchronize–Acknowledge): The server receives the SYN, reserves resources for the 
+   connection, and responds with a SYN-ACK to acknowledge the request and share its own ISN.
+
+   ACK (Acknowledge): The client sends an ACK to confirm receipt of the SYN-ACK, 
+   completing the handshake.
+
+   Once the connection is established, TCP begins transmitting data.
+   he protocol guarantees that all packets (segments) are delivered in order, without duplication, 
+   and without loss.
+
+   Segmentation: Large data is broken into smaller, manageable chunks called segments.
+
+   Error Detection: Each segment includes a checksum to detect corruption in transit. 
+   Corrupted packets are discarded and resent.
+
+    Connection Termination
+When communication is complete, TCP closes the connection gracefully 
+
+Client -> FIN i wanna be done -> Server -> ACK (ok) ->Client 
+                                        -> FIN (closing) ->Client
+                                                            Client -> ACK (ok closed) -> Server
+
+This graceful shutdown ensures that no data is lost and 
+both parties are aware the connection is closed.          
+
+UDP is a connectionless protocol that sends data without establishing a formal connection
+
+No Handshake: Packets (called datagrams) are sent immediately without any prior negotiation. 
+This significantly reduces initial latency.
+
+No Acknowledgments: UDP doesn't wait for ACKs and doesn't retransmit lost packets. 
+If a packet is dropped, it's gone for good.
+
+no Ordering: There's no guarantee that packets will arrive in the order they were sent.
+
+Lightweight: The UDP header is much smaller (8 bytes) than the TCP header
+
+When an application wants to send data:
+
+It creates a datagram, attaches a destination IP and port, and sends it directly to the network.
+The receiving application (if it’s listening on that port) simply processes the incoming data.
+
+UDP treats every packet (called a datagram) as an independent message. Each datagram carries its own 
+header information and is routed individually through the network.
+
+This makes UDP ideal for real-time communication where dropping a few packets is 
+acceptable but delays are not.
+
+TCP prioritizes correctness, while UDP prioritizes timeliness.
+
+If your application requires...
+Guaranteed & Ordered Delivery
+TCP
+The Lowest Possible Latency
+UDP
+High Accuracy and Data Integrity
+TCP
+Real-Time Communication 	
+UDP
+Built-in Flow/Congestion Control 	
+TCP
