@@ -1,0 +1,49 @@
+Types of IT disasters can include: 
+
+Cyber attacks (for example, malware, DDoS, and ransomware attacks)
+Technological hazards (for example, power outages, pipeline explosions, and transportation accidents)
+Machine and hardware failure 
+
+Here's why disaster recovery is essential:
+
+Protects data: Minimizes data loss and ensures quick recovery.
+Ensures business continuity: Allows operations to resume quickly after a disruption.
+Reduces financial impact: Minimizes revenue loss, fines, and recovery costs.
+Maintains reputation: Protects brand image and customer trust.
+Meets compliance requirements: Helps adhere to data privacy laws and industry standards.
+
+What are the five steps of disaster recovery?
+A well-defined disaster recovery process typically involves these five key steps:
+
+Expand all
+Risk assessment
+Business impact analysis (BIA)
+DR planning
+Implementation
+Testing and maintenance
+
+An effective DR plan addresses three different elements for recovery: 
+
+Preventive: Ensuring your systems are as secure and reliable as possible, using tools and techniques to prevent a disaster from occurring in the first place. This may include backing up critical data or continuously monitoring environments for configuration errors and compliance violations. 
+Detective: For rapid recovery, you’ll need to know when a response is necessary. These measures focus on detecting or discovering unwanted events as they happen in real time. 
+Corrective: These measures are aimed at planning for potential DR scenarios, ensuring backup operations to reduce impact, and putting recovery procedures into action to restore data and systems quickly when the time comes. 
+
+The 3-2-1 rule is a best practice for data backup that helps to ensure data durability and availability in the event of a disaster. It states that you should have:
+
+3 copies of your data
+2 different storage media
+1 offsite copy
+
+Types of disaster recovery Backups Backup as a service (BaaS): A third-party provider offers regular data backups. 
+Disaster recovery as a service (DRaaS): Data and IT infrastructure are backed up and hosted on a third-party provider’s cloud infrastructure. 
+Point-in-time snapshots: Data, files, or an entire database are replicated at a specific point in time. 
+Virtual DR: Operations and data are backed up, or a complete replica of the IT infrastructure is created and run on offsite virtual machines (VMs).
+
+Benefits of disaster recovery:  Stronger business continuity  , Enhanced security
+For example, cloud-based DR solutions offer built-in security capabilities,
+like advanced encryption, identity and access management, and organizational policy. 
+Faster recovery : DR plans leverage data replication and often rely on automated recovery to 
+ minimize downtime and data loss.
+Reduced recovery costs
+High availability
+Better compliance
