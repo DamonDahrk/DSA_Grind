@@ -1,0 +1,73 @@
+A CDN is a geographically distributed network of servers that work together to deliver 
+web content based on the users geo locations
+
+The primary purpose of a CDN is to deliver content to end-users with high availability
+ and performance by reducing the physical distance between the server and the user.
+
+ A CDN operates using three key components:
+
+ Edge Servers – Located at Points of Presence (PoP) locations, these servers 
+ cache and deliver content closer to users.
+
+ Origin Servers – The primary servers where the original content is stored.
+
+ DNS (Domain Name System) – Directs user requests to the nearest
+  edge server instead of the origin server.
+
+  By leveraging edge servers distributed across multiple geographical regions, 
+  CDNs minimize latency and accelerate content delivery.
+
+HOW IT WORKS:
+
+1. User Request
+A user visits a website and requests content, such as an image, a webpage, or a video. 
+
+2. DNS Resolution
+
+The browser sends a DNS query to resolve the web content address 
+(e.g., https://cdn.example.com/images/logo.png) into an IP address.
+
+The DNS return the nearest CDN edge server’s IP address rather than the origin server.
+
+3. Cache Check
+If the content is already cached at the edge server, it is served immediately to the user.
+
+If not, the edge server forwards the request to the origin server. 
+The origin server processes the request and sends the content back to the edge server.
+ The edge server caches the content it retrieved from the origin server.
+
+4. Subsequent Requests
+Once cached, future requests for the same content are served directly from the edge server
+
+CDNs use a Time-to-Live (TTL) mechanism to determine how long content 
+remains cached before expiring.
+
+3. Benefits of Using a CDN
+
+Faster Load Times BY USING EDGE servers, 
+
+Reduced Server Load CDNs offload traffic from the origin server by caching static assets, 
+
+Improved Availability and Reliability – With multiple servers in different locations NO SPOFs
+
+Scalability: CDNs can handle traffic spikes more efficiently than traditional hosting,
+
+Global Reach: CDNs make it easier to deliver content to users worldwide
+
+Enhanced Security – Many CDNs offer DDoS protection, Web Application Firewalls (WAFs),
+
+issues: INC COST, INC COMPLEXITIES
+
+Use Cases of CDNs
+Video Streaming & OTT Platforms
+CDNs optimize video content delivery by caching video files closer to users,
+ minimizing buffering and latency.
+ Online Gaming
+Multiplayer online games require low-latency content delivery
+ to ensure a smooth gaming experience.
+
+ Content & Media Distribution
+News websites and content platforms deliver images, articles, and 
+videos through a CDN to handle large traffic spikes.
+
+eg. Cloudflare, Fastly, GOOGLE cloud CDNs, Azure CDNs
