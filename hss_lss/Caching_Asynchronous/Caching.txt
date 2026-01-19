@@ -1,0 +1,148 @@
+  a cache is a fast storage layer that keeps copies of frequently used data so future 
+  requests can be served quickly,
+
+ without repeatedly hitting slower systems like databases or external APIs.
+
+ With cache -> 50 ms , Without Cache -> 500 ms 
+10 x imrpovement 
+
+Unique identifiers for cached data. Good keys are:
+
+Deterministic: The same request always produces the same key
+Descriptive: You can understand what data the key represents
+Collision-free: Different data should never share a key
+
+The cached data itself. Can be:
+
+Serialized objects (JSON, Protocol Buffers, MessagePack)
+Raw strings or binary data
+Metadata: Information about the cached entry:
+
+Creation timestamp
+Expiration time (TTL)
+
+Cache Layers
+Browser Cache
+The closest cache to the user. Stores static assets and API responses based on HTTP headers.
+
+CDN cache, CDN content at edge locations worldwide.
+
+Application Cache
+In-memory cache within the application process itself.
+
+Distributed Cache
+A separate caching service shared by all application instances. 
+Redis and Memcached are the most common choices.
+
+Database Buffer Pool
+Databases maintain their own cache of frequently accessed pages in memory.
+
+Cache Hit and Miss
+When the application requests data from the cache, two things can happen:
+
+Cache Hit: The data exists in the cache. Return it immediately.
+
+Cache Miss: The data is not in the cache. Fetch from the source, optionally store in cache, then return.
+
+Cache Hit Ratio
+The percentage of requests served from cache versus total requests:
+Hit Ratio = Cache Hits / (Cache Hits + Cache Misses)
+
+A 90% hit ratio means 90% of requests avoid the database entirely. If your database can handle
+ 10,000 QPS, a 90% hit ratio means your system can effectively handle 100,000 QPS.
+
+ What to Cache
+Not all data benefits equally from caching. Good candidates:
+Read-heavy data 	:  Same data requested many times
+Expensive computations :	Aggregations, joins, transformations
+Slow data sources	   :    External APIs, legacy systems
+
+Poor Cache Candidates
+
+Write-heavy data	Cache invalidation overhead exceeds benefit
+Unique requests	Each request needs different data
+Large objects	Consume cache memory quickly
+
+The 80/20 Rule
+In most applications, 
+20% of the data serves 80% of the requests. 
+Focus caching efforts on that hot 20%:
+
+
+Cache Consistency
+The hardest problem in caching is keeping cached data consistent 
+with the source of truth. When the underlying data changes, the cache can become stale.
+
+Consistency Approaches:
+
+Approach	                How It Works	            Trade-off
+TTL-based	    Data expires after a time period	Simple but allows staleness up to TTL
+
+Invalidation	Explicitly remove/update cache 
+                        on changes	                Consistent but complex to implement
+
+Write-through	Update cache and database together	Consistent but higher write latency
+
+Caching Anti-Patterns
+
+Cache Everything
+Blindly caching all data leads to:
+
+Memory exhaustion
+Low hit ratios (cache filled with rarely accessed data)
+
+Infinite TTL
+Data that never expires:
+
+Becomes stale indefinitely
+Requires explicit invalidation for every change
+
+Cache as Primary Storage
+Treating the cache as the source of truth:
+
+Data loss on cache failure or eviction
+No durability guarantees
+
+The Thundering Herd
+When a popular cache entry expires, many requests simultaneously hit the database:
+
+
+1000 req -> Cache of product 123
+
+then TTL expires 
+
+Now, 1000 req -> DB -> Overloaded -> System Crash (also CACHE was empty)
+
+Solutions include locking (only one request fetches), probabilistic early expiration,
+ and background refresh.
+
+In distributed systems, caching introduces additional considerations:
+
+Consistency Across Nodes
+When multiple application servers share a cache, or when data is replicated:
+Cache entries must be invalidated across all nodes. Replication introduces 
+latency before all nodes are consistent.
+
+Data Partitioning
+Large caches partition data across multiple nodes. Consistent 
+hashing minimizes data movement when nodes are added or removed:
+
+Failure Handling
+What happens when cache is unavailable?
+
+Strategy	                    Behavior	                            Use Case
+Fail open	            Bypass cache, hit database directly	    Cache is optional optimization
+Fail closed	            Return error to user	                Cache data is critical
+Graceful degradation	Serve stale data if available	        Availability over consistency
+
+Measuring Cache Performance
+
+Hit ratio Latency  Memory usage  
+
+
+
+
+
+
+
+

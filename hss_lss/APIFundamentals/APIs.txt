@@ -1,0 +1,23 @@
+API stands for Application Programming Interface.
+
+At its core, an API is a bunch of code that takes an input and gives you predictable outputs.
+Think of an API as a middleman that enables applications to interact
+ without needing direct access to each other's code or database.
+
+ Examples:
+
+Weather API – If you provide a city name as input ("New York"), the API returns 
+the current temperature, humidity, and weather conditions.
+Uber Ride API – If you provide a pickup and destination address,
+ the API finds the nearest available driver and calculates the estimated fare.
+Python's sorted() API – If you provide a list of numbers ([5, 3, 8, 1]), 
+the API returns the sorted list ([1, 3, 5, 8]).
+
+When engineers build APIs, they clearly define what inputs the API accepts and what outputs it produces,
+ ensuring consistent behavior across different applications.
+
+APIs follow a simple request-response model:
+A client (such as a web app or mobile app) makes a request to an API.
+The API (hosted on an API server) processes the request, interacts with the necessary
+ databases or services, and prepares a response.
+ 
