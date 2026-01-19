@@ -1,0 +1,113 @@
+3 main problems with microservices architecture are:
+
+Dependency
+
+Scale
+
+Variance
+
+1. Dependency Here are 4 scenarios where the dependency problem occurs:
+i. Intra-Service Requests
+A client request results in a service calling another service. Put another way,
+ service A needs to call service B to create a response.
+
+The problem with it is that a failure of a microservice results in cascading failures. The solutions are:
+
+Use the circuit breaker pattern to prevent cascading failures. It avoids an operation that will probably fail
+
+Do fault injection testing to check if the circuit breaker pattern works as expected. It does it by creating artificial traffic
+
+Set up fallback to a static page to keep the system always responsive
+
+ii Client Libraries
+An API gateway allows the reuse of business logic across many types of clients.
+
+An API gateway is a central entry point that routes API requests. But it has the
+ following limitations:
+
+Heap consumption becomes difficult to manage
+Potential logical defects or bugs
+Potential transitive dependencies
+
+III Persistence
+
+The choice of the storage layer depends on the CAP theorem. Put another way,
+ it is a trade-off decision between availability and consistency level.
+
+ iv Infrastructure The entire data center might fail. So the solution is to replicate 
+ the infrastructure across many data centers.
+
+ 2. Scale
+
+ The ability of the system to manage increased workload while maintaining performance
+  is called scale. The 3 dimensions of horizontal scalability are:
+
+Keep the service stateless if possible
+Partition the service if it can't be stateless
+Replicate the service
+
+Stateless Services
+The 2 qualities of stateless service are:
+
+There is no instance affinity (sticky sessions). Put another way, 
+requests don't get routed to the same server
+
+Failure of a stateless service is not notable
+
+The stateless service needs to be replicated for high availability. And autoscaling must be set up for on-demand replication.
+
+Also autoscaling reduces the impact of the following problems:
+
+Reduced compute efficiency
+
+Node failures   
+Traffic spikes
+Performance bugs
+
+Chaos engineering checks whether autoscaling works as expected. It tests system resilience through controlled disruptions 
+to ensure improved reliability.
+
+ Stateful Services
+The database and cache are stateful services. Also a custom service that holds
+ large amounts of data is a stateful service. The failure of a stateful service is a 
+ Notable event.
+
+An anti-pattern with the stateful service is having a sticky session without replication. 
+Because it creates a single point of failure.
+
+ Hybrid Services
+A cache is a hybrid service. A hybrid service expects an extreme load. For example, 
+Netflix’s cache gets 30 million requests per second.
+
+The best approach to building a hybrid service is the following:
+
+Partition the workload using techniques like consistent hashing
+Enable request-level caching
+Allow fallback to a database
+
+
+The variety in the software architecture is called variance. The system complexity
+ grows as variance increases.
+
+Here are 2 scenarios where the scale problem occurs:
+
+i Operational Drift
+Operational drift is the unintentional variance that happens as time passes. 
+It is usually a side-effect of new features added to the system. The examples of 
+operational drift are:
+
+Increased alert thresholds
+Increased timeouts
+Degraded throughput
+
+Polyglot
+The variance introduced by engineers on purpose is called Polyglot. It happens when 
+different programming languages are used to create different microservices.
+
+It comes with the following drawbacks:
+A large amount of work needed to get productive tooling
+Extra operational complexity
+Difficulty in server management
+Business logic duplication across many technologies
+Increased learning curve to become an expert
+
