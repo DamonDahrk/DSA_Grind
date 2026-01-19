@@ -1,0 +1,75 @@
+5 most common caching strategies:
+
+Read Through 
+
+Read Through strategy, the cache acts as an intermediary between the 
+application and the database.
+
+When the application requests data, it first looks in the cache.
+
+If data is available (cache hit), it’s returned to the application.
+
+If the data is not available (cache miss), the cache itself is responsible
+ for fetching the data from the database, storing it, and returning it to the application.
+
+ This approach simplifies application logic because the application does not need to handle 
+ the logic for fetching and updating the cache.
+
+ To prevent the cache from serving stale data, a time-to-live (TTL) can be added to cached entries
+
+ 
+2. Cache Aside
+
+Cache Aside, also known as "Lazy Loading", is a strategy where the application code handles
+ the interaction between the cache and the database. The data is loaded into the cache
+  only when needed.
+
+The application first checks the cache for data. If the data exists in cache (cache hit),
+ it’s returned to the application.
+
+If the data isn't found in cache (cache miss), the application retrieves it from the 
+database (or the primary data store), then loads it into the cache for subsequent requests.
+
+3. Write Through
+In the Write Through strategy, every write operation is executed on both the cache and 
+the database at the same time.
+
+This is a synchronous process, meaning both the cache and the database are updated
+ as part of the same operation, ensuring that there is no delay in data propagation.
+
+ This approach ensures that the cache and the database remain synchronized and the 
+ read requests from the cache will always return the latest data
+
+In a Write Through caching strategy, cache expiration policies (such as TTL) 
+are generally not necessary. 
+
+The biggest advantage of Write Through is that it ensures strong data
+ consistency between the cache and the database.
+
+ higher write latency
+
+ 4. Write Around
+
+ Write Around is a caching strategy where data is written directly to the database, bypassing the cache.
+
+The cache is only updated when the data is requested later during a read operation, at which point the 
+Cache Aside strategy is used to load the data into the cache.
+
+This approach ensures that only frequently accessed data resides in the cache, preventing it from being polluted
+ by data that may not be accessed again soon.
+
+ Write Around caching is best used in write-heavy systems where data is frequently written or updated, 
+
+ 5. Write Back
+
+ In the Write Back strategy, data is first written to the cache and then asynchronously
+  written to the database at a later time.
+
+This strategy focuses on minimizing write latency by deferring database writes.
+
+This deferred writing means that the cache acts as the primary storage during write operations, 
+while the database is updated periodically in the background.
+
+Write Back caching is ideal for write-heavy scenarios where write operations need to be fast
+ and frequent, but immediate consistency with the database is not critical, such as 
+ logging systems and social media feeds.
