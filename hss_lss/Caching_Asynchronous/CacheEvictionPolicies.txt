@@ -1,0 +1,92 @@
+ Top 7 Cache Eviction Strategies 
+
+ Least Recently Used (LRU)
+LRU evicts the item that hasn’t been used for the longest time.
+
+Access Tracking: LRU keeps track of when each item in the cache was last accessed. using various
+ data structures, like doubly linked list or a combination of a hash map and a queue.
+
+ Cache Hit (Item Found in Cache): When an item is accessed, it is moved to the most 
+ recently used position 
+
+ Cache Miss (Item Not Found in Cache):
+
+If the item isn’t in the cache and the cache has free space, it is added directly.
+
+If the cache is full, the least recently used item is evicted to make space for the new item.
+
+Intuitive Efficient Cons: Performance Cost: For large caches, Metadata Overhead: Tracking usage 
+order can consume additional memory.
+
+2. Least Frequently Used (LFU) evicts the item with the lowest access frequency
+
+Same thing as above but with freq 
+Efficient for Predictable Patterns: Highly Effective for Popular Data
+
+Cons: High Overhead: Requires additional memory to track frequency counts.
+Slower Updates: Tracking and updating frequency can slow down operations.
+
+3. (FIFO) FIFO evicts the item that was added first, regardless of how often it’s accessed.
+
+FIFO operates under the assumption that items added earliest are least likely 
+to be needed as the cache fills up.
+
+Simple to Implement: Low Overhead Deterministic Behavior: Eviction follows a predictable order.
+
+Cons: Ignores Access Patterns, Suboptimal for Many Use Cases, May Waste Cache Space
+
+4. Random Replacement 
+
+Eviction: The randomly selected item is removed, and the new item is added to the cache.
+
+Simple to Implement: Low Overhead:  Fair for Unpredictable Access Patterns: 
+
+CONS: Unpredictable Eviction, Inefficient for Stable Access Patterns , High Risk of Poor Cache Hit Rates
+
+5. Most Recently Used (MRU)
+
+The idea behind MRU is that the most recently accessed item is likely to be a 
+temporary need and won’t be accessed again soon, 
+
+Eviction: The item that was accessed or added most recently is removed.
+
+Effective in Specific Scenarios: Retains older data, 
+which might be more valuable in certain workloads.
+Simple Implementation: Requires minimal metadata.
+
+Cons: Suboptimal for Most Use Cases: MRU assumes recent data is less valuable,
+ which is often untrue for many applications.
+Poor Hit Rate Rarely Used in Practice
+
+6. Time to Live 
+TTL is a cache eviction strategy where each cached item is assigned a fixed lifespan.
+TTL is often implemented in caching systems like Redis or Memcached,
+
+Ensures Freshness: Simple to Configure Low Overhead Prevents Memory Leaks: Stale data is 
+cleared out systematically,
+
+Cons: Fixed Lifespan , Wasteful Eviction: Items that haven’t expired but are still
+ irrelevant occupy cache, Limited Flexibility: TTL doesn’t adapt to dynamic workloads
+
+ 7. Two-Tiered Caching
+
+ combines two layers of cache—usually a local cache (in-memory) and
+ a remote cache (distributed or shared).
+
+ The local cache serves as the first layer (hot cache), providing 
+ ultra-fast access to frequently used data, while the remote cache acts as the second 
+ layer (cold cache) for items not found in the local cache but still needed relatively quickly.
+
+ If the data is still not found (another cache miss), it retrieves the data from Database.
+
+ Pros: Ultra fast, Scalable Storage,  (multiple servers), Reduces DB load, Fault Tolerance
+
+ Cons: Complexity (managing two caches more overhead), Stale Data (inconsistent updates
+ between two caches), Increased Latency for remote Cache Hits. 
+
+ 
+
+
+
+
+
