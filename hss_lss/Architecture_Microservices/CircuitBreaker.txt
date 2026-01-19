@@ -1,0 +1,33 @@
+The Circuit Breaker design pattern is used to stop the request and response process if a
+ service is not working, as the name suggests.
+
+prevents cascading failures 
+
+ As an example, assume a consumer sends a request to get data from multiple services. But, 
+ one of the services is unavailable due to technical issues. There are mainly two issues 
+ you will face now.
+
+First, because the consumer will be unaware that a particular service is unavailable (failed),
+ so the requests will be sent to that service continuously.
+The second issue is that network resources will be exhausted with low performance and 
+user experience.
+
+You can leverage the Circuit Breaker Design Pattern to avoid such issues.
+
+When the number of failures reaches a certain threshold, the circuit breaker trips for 
+a defined duration of time.
+
+During this timeout period, any requests to the offline server will fail. When that time
+ period is up, the circuit breaker will allow a limited number of tests to pass,
+  and if those requests are successful, the circuit breaker will return to normal 
+  operation.
+
+ The circuit breaker’s basic concept is to wrap a protected function call in a circuit
+  breaker object that monitors for failures. When the number of failures reaches a certain 
+  threshold, the circuit breaker trips, and all req return with an error.
+
+  The Circuit Breaker pattern has 3 states.
+
+Open.
+Closed.
+Half-Open.
