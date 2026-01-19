@@ -1,0 +1,3 @@
+Distributed tracing is a method of observing requests as they propagate through 
+distributed cloud environments
+
