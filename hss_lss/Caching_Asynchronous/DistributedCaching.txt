@@ -1,0 +1,78 @@
+Distributed caching is a technique where cache data is stored across multiple nodes
+ (servers) instead of a single machine.
+Why:
+ This allows the cache to scale horizontally
+No SPOFs
+Load Balancing
+
+Components of Distributed Caching:
+Cache Nodes: These are the individual servers where the cache data is stored.
+
+Client Library/Cache Client: Applications use a client library to talk to the distributed cache.
+
+Consistent Hashing: This method spreads data evenly across cache nodes. 
+adding or removing nodes has minimal impact on the system
+
+Replication: To make the system more reliable, some distributed caches 
+replicate data across multiple nodes
+
+Sharding: Data is split into shards, and each shard is stored on a different cache node.
+
+Eviction Policies: Caches implement eviction policies like LRU,LFU or TTL 
+to get rid of less used data and make space for new 
+
+Coordination and Synchronization: Coordination mechanisms like distributed
+ locks or consensus protocols ensure that cache nodes remain synchronized,
+
+ Dedicated cache servers are standalone machines or virtual instances used only for caching.
+
+ Server 1 -> Cache Server 1    |  Server 2 -> Cache Server 2 
+
+ Advantages: Scalibility independently of the app servers , you can add more cache nodes
+ without impacting app layer 
+ Resource Isolation: Keeping cache on separate servers to prevent slowness in main servers
+
+ Disadvantages: Cost, Network Latency due to being seperate 
+
+ Co-located cache means running the cache and the application on the same server
+ the app and the cache share the same resources like CPU, memory, and network interfaces.
+
+ Advantages: Low Latency Cost Efficiency , iseal for high freq trading app, real time gaming
+
+ Disadvantages: Resource Contention, Co-located caching is less scalable compared 
+  Scaling the cache might require upgrading the entire server.
+
+  Complex Cache Invalidation: When using co-located caches in a distributed environment, 
+  keeping the cache up-to-date and getting rid of old data can become tricky.
+
+  How Does Distributed Caching Work?
+
+  When data is cached, the client library typically hashes the key
+   associated with the data to determine which cache node will store it.
+
+    For reliability, the cache system replicates the cached data across multiple nodes.
+
+To get data from the cache, application provides the key to the client library. 
+if cache hit return to app, else fetch from db and then cache later
+
+Cache Invalidation: To keep the cache data in sync with the primary data source,
+ it needs to be invalidated or updated periodically
+
+ Cache Eviction: Since caches have limited space, they need an eviction policy to make room for new data. 
+
+ Challenges in Distributed Caching
+
+ Cache Invalidation, Data Consistency(in write heavy sys) ,Scalability and Load Balancing
+ As the system scales, ensuring that the cache is evenly balanced across nodes without any 
+ one node becoming a bottleneck requires sophisticated load balancing strategies.
+
+ Network Partitioning: In a distributed system, network partitions can occur, 
+ leading to situations where cache nodes are unable to communicate with each other.
+
+ Best Practices for Implementing Distributed Caching:
+
+ Set Appropriate TTLs , Monitor and Tune , Plan for Failure (gracefully),
+  Develop strategies to pre-populate critical data in the cache to avoid cold starts,
+  Cache Judiciously: Not all data benefits from caching. 
+
+eg. Redis Memacached, Amazon Elasticache 
