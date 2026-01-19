@@ -1,0 +1,44 @@
+In a distributed system, it may happen that multiple nodes are processing large
+ computations distributedly and they need to know the results of each node to keep 
+ them updated about the whole system. In such a situation, the nodes need to agree upon 
+ a common value. This is where the requirement for consensus comes into the picture.
+
+ How to achieve Consensus in Distributed System
+
+ Case 1: All the nodes can carry out their task keeping v as the value in their mind.
+
+Case 2: Suppose one of the nodes suggests “I prefer value w”. In this type of situation 
+achieving consensus is complicated.
+
+To achieve consensus all the nodes
+
+Agreement: All non-faulty nodes should agree on the same value.
+Validity: If a system has decided on a value v then that value should be suggested by one of the non-faulty nodes of the system and all other non-faulty nodes must decide that value v.
+Termination: Every non-faulty node should agree upon some value. If one of the non-faulty nodes agrees upon value v, consensus can not be achieved.
+
+Challenges 
+
+Crash failure occurs when a node is not responding to other nodes of the system due to some hardware or software or network fault.
+
+Byzantine failure is a situation where one or more node is not crashed but behaves
+ abnormally and forward a different message to different peers, due to an internal 
+ or external attack on that node
+
+ Consensus Algorithms
+Voting-based Consensus Algorithms
+Some of the first implementations of consensus algorithms began to employ various voting-based techniques.
+
+If more than two-thirds of all nodes in a system are honest then consensus can be reached.
+Practical Byzantine Fault Tolerance pBFT
+
+There are several Proof-based Consensus algorithms —
+
+Proof of Work (PoW)
+Proof of Stake (PoS) etc…
+
+Application of Distributed Consensus
+Consensus algorithms are used in many real-world applications in distributed or decentralized networks —
+
+✅ Blockchain and cryptocurrencies
+✅ Google page-rank
+✅ Load balancing etc…
