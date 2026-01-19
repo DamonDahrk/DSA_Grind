@@ -1,0 +1,59 @@
+Distributed locking ensures that only one process/node can access a shared resource 
+at a time across multiple machines.
+
+In a single server:
+
+We use mutex / synchronized blocks
+
+In distributed systems:
+
+Multiple services
+Multiple machines
+Shared resources (DB row, cache key, file, order ID)
+
+Efficiency: Taking a lock saves you from unnecessarily doing the same work twice
+Correctness: Taking a lock prevents concurrent processes from stepping on each others’ toes and messing up the state of your system.
+
+For example, say you have an application in which a client needs to update a file in 
+shared storage (e.g. HDFS or S3). A client first acquires the lock, then reads the file,
+ makes some changes, writes the modified file back, and finally releases the lock. 
+ The lock prevents two clients from performing this read-modify-write cycle concurrently
+ 
+ example, the client that acquired the lock is paused for an extended period of time
+ The lock has a timeout (i.e. it is a lease), which is always a good idea 
+
+ However, if the GC pause lasts longer than the lease expiry period, and the client 
+ doesn’t realise that it has expired, it may go ahead and make some unsafe change.
+
+ The fix for this problem is actually pretty simple: you need to include a fencing 
+ token with every write request to the storage service.
+
+ Client 1 acquires the lease and gets a token of 33, but then it goes into a long pause and the lease expires.
+  Client 2 acquires the lease, gets a token of 34 (the number always increases),
+
+ then sends its write to the storage service, including the token of 34. Later, client 1 comes back
+  to life and sends its write to the storage service, including its token value 33. 
+  However, the storage server remembers that it has already processed a write with a 
+  higher token number (34), and so it rejects the request with token 33. 
+
+  A lock is valid only if acquired in a majority of Redis nodes within a bounded time.
+
+  Redlock is a Redis-based distributed locking algorithm that uses quorum consensus across multiple independent Redis nodes.
+
+  More than half must agree before something is considered valid.quorum consensus
+Quorum ensures:
+
+❌ Two sides don’t both “win”
+❌ Split-brain situations
+✅ Only one truth
+
+In Redlock:
+
+5 Redis nodes
+
+Client must lock at least 3
+
+If:
+
+Client A locks nodes 1,2,3 → ✅ owns lock
+Client B locks nodes 3,4 → ❌ only 2 → fails
