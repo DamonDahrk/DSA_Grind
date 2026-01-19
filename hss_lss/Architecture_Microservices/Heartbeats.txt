@@ -1,0 +1,49 @@
+In distributed systems, a heartbeat is a periodic message sent from one component to
+ another to monitor each other's health and status.
+
+ Without a heartbeat mechanism, it's hard to quickly detect failures in a distributed system, leading to:
+
+Delayed fault detection and recovery
+
+Increased downtime and errors
+
+Decreased overall system reliability
+
+Heartbeats can help with: Monitoring Detecting Failures Triggering Recovery Actions Load Balancing
+
+How Do Heartbeats Work?
+
+Heartbeat sender (Node): This is the node that sends periodic heartbeat signals.
+
+Heartbeat receiver (Monitor): This component receives and monitors the heartbeat signals.
+
+The node sends a heartbeat signal to the monitor at regular intervals (e.g., every 30 seconds).
+
+The monitor receives the heartbeat signal and updates the node's status as "alive" or "available".
+
+If the monitor doesn't receive a heartbeat signal within the expected timeframe, it marks the node as "unavailable" or "failed".
+
+Frequency: How often should heartbeats be sent
+Timeout: How long should a node wait before it considers another node 'dead'?
+Payload: Heartbeats usually just contain a little bit of information like a timestamp 
+or sequence number. But, they can also carry additional data like how much load a node is
+ currently handling, health metrics, or version information.
+
+Types of Heartbeats 
+
+Push heartbeats: Nodes actively send heartbeat signals to the monitor.
+Pull heartbeats: The monitor periodically queries nodes for their status
+
+Network Congestion: If not managed correctly, the constant flow of heartbeat signals can contribute to network congestion.
+
+False Positives: Poorly configured heartbeat intervals might lead to false positives in failure detection, where a slow but functioning component is incorrectly identified as a failed one.
+
+Resource Usage: Continuous monitoring requires computational resources, which must be optimized to prevent undue strain on the system.
+
+
+Database Replication: Primary and replica databases often exchange heartbeats to ensure data is synchronized and to trigger failover if the primary becomes unresponsive.
+
+Kubernetes: In the Kubernetes container orchestration platform, each node sends regular heartbeats to the control plane to indicate its availability. The control plane uses these heartbeats to track the health of nodes and make scheduling decisions accordingly.
+
+Elasticsearch: In an Elasticsearch cluster, nodes exchange heartbeats to form a gossip network. This network enables nodes to discover each other, share cluster state information, and detect node failures.
+
