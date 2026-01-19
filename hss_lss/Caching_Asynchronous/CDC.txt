@@ -1,0 +1,73 @@
+Change Data Capture (CDC) is a design pattern used to track and capture changes in a 
+database (inserts, updates, deletes) and stream those changes in real time to 
+downstream systems.
+
+This ensures downstream systems remain in sync without needing expensive batch jobs.
+
+1. How CDC Works
+
+When a change occurs, CDC captures the change event and makes the 
+information available for processing.
+
+   capturing changes              publish to stream               Consume Events 
+DB -----------------> CDC Engine    ------------->   Message Queue -------------->  Downstream
+                       Insert Update                                              Applications
+                        Delete 
+
+The process typically involves: Monitoring, Capturing , Delivering
+
+2. CDC Implementation Approaches
+
+2.1 Timestamp-Based CDC
+This approach relies on adding a last_updated or last_modified column to your database tables.
+Simplicity , No External Dependencies, 
+
+Cons:
+Incomplete Capture: This method may not capture deleted records 
+since the timestamp is typically updated on existing rows.    
+
+Performance Overhead: As your data grows, frequent querying based on timestamps can impact performance
+
+2.2 Trigger-Based CDC
+
+Trigger-Based CDC involves setting up database triggers that automatically log changes to a 
+separate audit table whenever an insert, update, or delete operation occurs.
+
+Pros:
+Real-Time Capture: Triggers capture changes immediately when they occur.
+Detailed Auditing: Offers a granular record of changes, including before-and-after 
+values, which is useful for audit trails and debugging.
+
+Cons:
+Performance Impact: Triggers execute during the transaction, potentially slowing down database
+ write operations.
+Complexity in Maintenance: Changes in database schema often require corresponding updates
+ to trigger definitions.
+
+ 2.3 Log-Based CDC
+
+ An online news platform uses caching to speed up page loads for popular articles.
+ However, when an article is updated (e.g., a correction is issued or new content 
+ is added), the cache must be invalidated to prevent serving stale content.
+
+  CDC, changes in the content database are captured and automatically trigger cache updates,
+
+  4. Implementing CDC with Debezium and Kafka
+
+  Step 1: Set Up Kafka and Debezium
+  Step 2: Configure Debezium Connector for MySQL
+  Step 3: Listen for Changes
+Once the Debezium connector is properly configured and running, it starts capturing change events 
+from the MySQL database.
+
+5. Challenges and Considerations: Schema Evolution: Databases evolve over time,
+ A robust CDC pipeline must gracefully adapt to schema alterations
+
+ High Throughput Handling: In high-transaction environments, large volumes of data
+  changes can occur rapidly. It’s essential to design a CDC system that can process
+   and relay these events efficiently to avoid overwhelming downstream systems.
+
+   Ordering Guarantees: Maintaining the correct sequence of events is critical,
+
+ Security and Compliance: Because CDC involves capturing detailed data changes, 
+ it can expose sensitive information if not properly managed.  
