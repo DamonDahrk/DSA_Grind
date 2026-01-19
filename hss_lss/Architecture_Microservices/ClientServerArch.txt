@@ -1,0 +1,82 @@
+Client-server architecture is a computing model in which multiple clients 
+(users or devices) interact with a centralized server to access data,
+ resources, or services.
+
+ 3 Fundamental Models: 
+The Client: This is the application that the end user interacts with.
+The Server: This is a powerful computer or application that is always on,
+The Network: This is the communication medium that connects the client and the server. 
+It is governed by a set of rules, or protocols (like TCP/IP and HTTP)
+
+Key Technologies Involved: HTTP, DNS , TCP/IP
+
+1-Tier Architecture (Monolithic Model)
+In 1-tier architecture, everything—the user interface, business logic, and data storage—resides in a single layer. 
+
+Example Use Cases:
+Microsoft Excel
+Personal finance tools that store and compute everything locally
+Best suited for small, standalone, offline applications.
+
+2-Tier Architecture
+In a 2-tier architecture, the system is split into two parts:
+
+The client, which handles the presentation layer (UI)
+The server, which handles both the business logic and data storage
+
+Example Use Case:
+A desktop application that connects directly to a central database to retrieve and display data.
+Suitable for internal tools or apps with a small user base and limited traffic.
+
+3-Tier Architecture
+The 3-tier architecture introduces a dedicated Application Layer (also called
+the business logic layer) between the client and the data server.
+This creates a clear separation of concerns and is the most commonly used 
+architecture for modern web and enterprise applications.
+
+Client (Presentation Layer): The front-end interface users interact with (e.g., a browser or mobile app).
+Application Server (Logic Layer): Processes client requests, applies business rules,
+ and interacts with the database.
+Database Server (Data Layer): Handles storage, retrieval, and management of data.
+
+Pros:
+Better scalability and maintainability
+Logic is centralized, so clients are lightweight
+Cons:
+More complex than 1- or 2-tier setups
+
+N-Tier Architecture
+N-tier architecture builds on the 3-tier model by adding specialized layers for specific responsibilities 
+such as caching, load balancing, authentication, analytics, or API gateways.
+
+Common Layers:
+Client: User interface or front-end application.
+Presentation Layer: Manages the user interface and presentation logic.
+Application Layer: Handles business logic and rules.
+
+Example: A large e-commerce platform with separate services for user authentication, 
+product catalog, shopping cart, and payment processing might use an N-tier architecture.
+
+
+4. Advantages of Client-Server Architecture
+The client-server model offers several advantages, which is why it’s so widely used:
+
+Centralized Management: Since the server is the central authority, it's easier to manage, update, and secure the system.
+Scalability: The server can be scaled up (vertically) or out (horizontally) to handle more client requests without affecting the clients themselves.
+Data Integrity: All data is stored and managed centrally on the server, ensuring consistency and control.
+Resource Sharing: Multiple clients can access and share the same resources and data provided by the server.
+
+Challenges : SPOF, Performance bottlenecks, Complexity 
+
+6. Scaling the Client Server Model
+Modern systems overcome the limitations of a single server through several techniques.
+
+Load Balancers: Distribute incoming client requests across a pool of multiple servers, preventing any single server from becoming a bottleneck.
+Caching: Use caching layers (like Redis or a CDN) to store frequently accessed data closer to the client, reducing the load on the server and improving response times.
+Horizontal Scaling: Instead of making one server more powerful (vertical scaling), you add more servers to the pool (horizontal scaling).
+Microservices: Decompose a large, monolithic server application into multiple, smaller, independent services, each of which can be scaled independently.
+
+Realworld apps: Browsers, Email Services, Online Banking, Cloud Computing 
+
+
+ 
