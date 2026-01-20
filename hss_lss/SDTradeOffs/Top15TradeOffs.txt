@@ -1,0 +1,125 @@
+Scaling vs performance 
+
+Adding more machines to a system can make it more scalable, but the complexity of managing these machines and coordinating tasks across them might introduce delays affecting performance.
+
+
+Vertical vs. Horizontal Scaling
+
+Vertical scaling involves adding more resources to an existing server (eg. CPU, RAM), while horizontal scaling means adding more servers to the pool.
+
+I mean simple go vertical, if you want to build bigger apps literally go horizontal cuz what's stopping you
+
+Latency vs. Throughput
+
+Latency measures the time that data takes to transfer across the network.
+
+Throughput refers to the average volume of data that can actually pass through the network over a specific time.
+
+Online gaming requires low latency to provide real-time interactions among players.
+
+A data analytics service prioritizes throughput to process and analyze large datasets over time.
+
+SQL vs NoSQL Databases
+
+SQL (relational databases) are built on the relational model that organizes data into tables of rows and columns, with a unique key identifying each row.
+
+NoSQL (non-relational databases) offer flexibility and scale easily but might sacrifice SQL like query capabilities and ACID transactions.
+
+Companies like Netflix use NoSQL for real-time recommendation engines. NoSQL databases can quickly process large sets of diverse data (views, ratings, preferences) to deliver personalized content recommendations to millions of users.
+
+SQL is used by insurance companies and bank comp
+
+Consistency vs. Availability (CAP Theorem)
+
+Consistency means that every time someone accesses the system, they get the most recent data.
+Example: Amazon always updates inventory after customer buys
+
+Availability is about ensuring the system is always up and running, even if some parts of it are having problems.
+Example: In an online messaging service, availability ensures you can still send and receive messages even when some servers are down.
+
+
+Strong vs Eventual Consistency
+
+Strong consistency means that as soon as a data update occurs, any subsequent access to that data will reflect the update.
+Example: In a banking system, when you transfer money from one account to another, the system updates the balances immediately.
+
+Eventual consistency, on the other hand, means there might be a delay before an update is visible across all nodes in a system. But, it's guaranteed that if no new updates are made, eventually, all accesses to that data will return the updated value.
+Example: On a social media platforms like Instagram, when you post a new photo, it might not immediately appear on all your followers' feeds. However, after a short period, everyone will be able to see the latest updates.
+
+Read-Through vs Write-Through Cache
+
+Write through cache updates the data in the database and the cache at the same time ensuring up to date data and reducing data loss risks
+
+Eg. Movie booking system uses it to prevent over booking
+
+Read through first checks if the record asked by client exists in cache , if it's cache miss then record the data from the database to cache before returning to the user 
+
+Example: In an online store, when a customer views a product for the first time, the product details are fetched from the database and stored in the cache. Subsequent views are served from the cache, speeding up the response time
+
+
+Batch vs Stream Processing
+
+Batch processing involves collecting data over a period of time and then processing it all at once.
+Stream processing, on the other hand, deals with data in real-time, processing it as soon as it arrives
+
+Credit card companies use batch processing for daily billing and statement generation.
+For fraud detection, they implement stream processing to analyze transactions in real-time and flag suspicious activities immediately.
+
+Synchronous vs. Asynchronous Processing
+
+Synchronous processing means tasks are performed one after another. A task must be completed before the next one starts,
+
+After you click pay now, the site waits for payment to complete before continuing 
+
+Asynchronous processing allows tasks to run in the background and doesn't need to wait for it to complete before starting another one.
+
+Social media video upload happening in the background 
+
+Stateful vs Stateless Architecture
+
+A stateful system remembers past interactions. It stores information about the current session, making it possible to have continuity and context in subsequent interactions without needing to start from scratch each time.
+
+During online shopping, when you add items to your cart, the website remembers your selections
+
+A stateless system does not keep track of past interactions. Each request is treated as new, with no information retained from previous requests.
+
+Many RESTful web services, operate without remembering past requests.
+
+TCP vs UDP
+
+TCP (Transmission Control Protocol) ensures that your message arrives intact and in the exact order you sent it. It establishes a connection between sender and receiver, checks that data is received correctly, and resends lost data.
+
+UDP (User Datagram Protocol) sacrifices reliability for speed, suitable for time-sensitive applications like video streaming where it’s okay if some data gets lost in transmission.
+
+REST vs. GraphQL
+
+REST -> MULTIPLE commands needed to and from, also uses HTTP protection and ide potency 
+ GQL one command handles almost all PUT DELETE UPDATE GET whatever
+
+But it's less safe also new at 2015
+
+REST is a well-established standard for APIs, offering simplicity and support for multiple formats. With a REST API, you gather the data by accessing multiple endpoints.
+
+GraphQL provides more efficient data fetching with fewer requests but requires a steeper learning curve and more upfront design.
+Monolithic vs. Microservices Architecture
+
+A monolithic architecture is built as a single unified unit where all the parts of an application are bundled together while a microservices architecture is a collection of smaller, independently deployable services.
+
+Microservices Architecture improves scalability and development velocity. But, it introduces complexity in service management
+
+Monolithic Architecture offers simplicity and ease of deployment, making it suitable for smaller applications or teams
+
+Normalization vs. Denormalization
+
+Normalization in database design involves splitting up data into related tables to ensure each piece of information is stored only once.
+
+Denormalization, on the other hand, is the process of combining data back into fewer tables to improve query performance. This often means introducing redundancy (duplicate information) back into your database.
+
+Long Polling vs WebSockets
+
+Long polling is a technique where the client requests data from the server and the server holds the request open until new information is available. After receiving the data, the client instantly sends a new request, enabling immediate updates.
+Example: A social media platform's notification system. 
+
+WebSockets provide a full-duplex communication channel over a single, long-lived connection, allowing the server and client to send data back and forth as soon as it's available, without waiting for a request from the other side.
+
+Eg. Multiplayer games
