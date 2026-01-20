@@ -123,3 +123,5 @@ Example: A social media platform's notification system.
 WebSockets provide a full-duplex communication channel over a single, long-lived connection, allowing the server and client to send data back and forth as soon as it's available, without waiting for a request from the other side.
 
 Eg. Multiplayer games
+
+Design URL Shortener like TinyURL
