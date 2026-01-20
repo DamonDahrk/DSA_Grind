@@ -125,3 +125,6 @@ WebSockets provide a full-duplex communication channel over a single, long-lived
 Eg. Multiplayer games
 
 Design URL Shortener like TinyURL
+Design Autocomplete for Search Engines
+Design Load Balancer
+Design Content Delivery Network (CDN)
