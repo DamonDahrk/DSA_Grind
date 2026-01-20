@@ -128,3 +128,4 @@ Design URL Shortener like TinyURL
 Design Autocomplete for Search Engines
 Design Load Balancer
 Design Content Delivery Network (CDN)
+Design Parking Garage
